@@ -7,7 +7,7 @@ Clone this Git repository and unfreeze the requirements.txt file to gain access 
 pip3 install -r requirements.txt
 ```
 
-# Updating Dependencies
+## Updating Dependencies
 After updating dependencies on your venv, you **MUST** re-freeze the requirements.txt file.
 ```shell
 pip3 freeze > requirements.txt
