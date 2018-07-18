@@ -7,6 +7,12 @@ Clone this Git repository and unfreeze the requirements.txt file to gain access 
 pip3 install -r requirements.txt
 ```
 
+# Updating Dependencies
+After updating dependencies on your venv, you **MUST** re-freeze the requirements.txt file.
+```shell
+pip3 freeze > requirements.txt
+```
+
 ## Heroku Servers
 There are two Heroku servers, one for staging (test server) and another for production.
 
