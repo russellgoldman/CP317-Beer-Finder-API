@@ -29,7 +29,7 @@ def hello():
         arr.append(row)
 
     return ','.join(str(i) for i in arr)
-
+    db_session.remove()
 
 @app.route('/<name>')
 def hello_name(name):
