@@ -4,14 +4,34 @@
 Clone this Git repository and unfreeze the requirements.txt file to gain access to a venv depencency folder.
 
 ```shell
+source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
 ## Updating Dependencies
 After updating dependencies on your venv, you **MUST** re-freeze the requirements.txt file.
 ```shell
+source venv/bin/activate
 pip3 freeze > requirements.txt
 ```
+
+## Updating Models.py
+```shell
+flask-sqlacodegen --flask --outfile models.py postgres://hatfznjj:hcAJJv82Hpnt6tjc2OH5oIzFTuQmd6N4@stampy.db.elephantsql.com:5432/hatfznjj
+```
+After running this, remove the following in models.py:
+- t_pg_stat_statements table
+
+Then if migrations folder is missing, run:
+```shell
+python3 manage.py db init
+```
+
+and then:
+```shell
+python3 manage.py db migrate
+```
+##
 
 ## Heroku Servers
 There are two Heroku servers, one for staging (test server) and another for production.
