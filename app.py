@@ -31,14 +31,19 @@ def hello():
     return ','.join(str(i) for i in arr)
     db_session.remove()
 
+
 def search(filters):
-    #search returns a list of accuracy percentages for each beer based on a set of filters that are passed in
+    #search section
     sql = """SELECT * from home_beer"""
     result = db.engine.execute(sql)
     beers = []
-    accuracies = []
     for row in result:
         beers.append(row)
+
+    accuracies = []
+    #accuracies is a list of the percentage matching to the filters
+    #if beer #2 of 4 matches 3/5 of the filters passed in,
+    #accuracies will be [0,0.6,0,0]
 
     numFilters = 0
     for filter in filters:
@@ -46,18 +51,44 @@ def search(filters):
             numFilters+=1
 
     for beer in beers:
-        for filter in filters:
-            i = 0
-            accuracy = 0
-            if beer[i] == filter and filter!="":
-                accuracy+=1
-            accuracies.append(accuracy/numFilters)
+        #for now, beer.containerType and beer.taste do not exist
+        i = 0
+        accuracy = 0
+        if beer.alcoholVolume == filters[0] and filters[0]!="":
+            accuracy+=1
+        if beer.brand == filters[1] and filters[1]!="":
+            accuracy+=1
+        if beer.bodyType == filters[2] and filters[2] != "":
+            accuracy+=1
+        if beer.containerType == filters[3] and filters[3] != "":
+            accuracy+=1
+        if beer.taste == filters[4] and filters[4] != "":
+            accuracy+=1
+        accuracies.append(accuracy/numFilters)
 
-    return accuracies
+    #sort section
+    i = 0
+    high = 1
+    sortedBeers = []
+    for rate in accuracies:
+
+        i+=1
+
+    db_session.remove()
+
 
 @app.route('/<name>')
 def hello_name(name):
     return "Hello {}!".format(name)
+
+@app.route('/test')
+def test():
+    sql = """SELECT * from home_beer"""
+    result = db.engine.execute(sql)
+    arr = []
+    for row in result:
+        arr.append(row)
+    return str(arr[0].id)
 
 # enable debug mode
 app.config['DEBUG'] = True
