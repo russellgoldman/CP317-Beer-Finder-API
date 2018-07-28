@@ -67,13 +67,19 @@ def search(filters):
         accuracies.append(accuracy/numFilters)
 
     #sort section
-    i = 0
     high = 1
     sortedBeers = []
-    for rate in accuracies:
 
-        i+=1
+    #for each level of accuracy, from high to low,
+    #checks all beers to see if it matches the level of accuracy and appends to sortedBeers
+    #upgrade would be to skip over beers that are of a higher accuracy
+    for i in range(numFilters,-1,-1):
+        j = 0
+        for beer in beers:
+            if accuracies[j] == i/numFilters:
+                sortedBeers.append(beer)
 
+    return sortedBeers
     db_session.remove()
 
 
