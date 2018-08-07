@@ -39,3 +39,33 @@ def searchFunc(beers, filters):
                 sortedBeers.append(beer)
 
     return sortedBeers, accuracies
+"""
+-------------------------------------------------------
+name: top_picksFunc
+Author:  Jeremy Lickers
+ID:      140246920
+Email:   lick6920@mylaurier.ca
+Version: 2018-08-07
+-------------------------------------------------------
+Description: Creates a list of the top picks of beers
+inputs:  beers: a list of beers
+return:   top_picks: a list of beers with max size 6
+-------------------------------------------------------
+"""
+def top_picksFunc(beers):
+    #The top picks are based on the highest alcoholVolume
+    top_picks = []
+    if not top_picks:
+        i = 1
+        n=len(beers)
+        j = 0
+        while i < n:
+            while beers[i].alcoholVolume > beers[j].alcoholVolume and \
+                j > -1:
+                j = j - 1
+            beers.insert(j,beers[i])
+            i = i + 1
+            beers.pop(i)
+        for i in range(6):
+            top_picks.append(beers[i])
+    return top_picks
