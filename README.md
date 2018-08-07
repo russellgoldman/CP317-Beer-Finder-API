@@ -25,9 +25,10 @@ After running this, remove the following in models.py:
 Then if migrations folder is missing, run:
 ```shell
 python3 manage.py db init
+python3 manage.py db migrate
 ```
 
-and then:
+Otherwise just run:
 ```shell
 python3 manage.py db migrate
 ```
