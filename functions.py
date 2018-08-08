@@ -37,11 +37,7 @@ def searchFunc(beers, filters):
         for beer in beers:
             if accuracies[j] == i / numFilters:
                 sortedBeers.append(beer)
-<<<<<<< HEAD
             j+=1
-    return sortedBeers, accuracies
-=======
-
     return sortedBeers, accuracies
 """
 -------------------------------------------------------
@@ -54,7 +50,7 @@ Version: 2018-08-08
 Description: Creates a list of the top picks of beers
 inputs:  beers: a list of beers
         db: a database connection
-return:   top_picks: a 2d list of beers with max size 6x2. 
+return:   top_picks: a 2d list of beers with max size 6x2.
             the beer_id then the rating
 -------------------------------------------------------
 """
@@ -104,4 +100,3 @@ def top_picksFunc(beers,db):
             top_picks[5][1] = total
         i=i+1
     return top_picks
->>>>>>> cb9e55b7d682b8b2c387bb3c319e2256fcd7d0df
