@@ -1,3 +1,19 @@
+"""
+-------------------------------------------------------
+name: searchFunc
+Author:  Matthew Wong, Kevin Tang
+ID:      160624580, 110511280
+Email:   wong4580@mylaurier.ca, tang1280@mylaurier.ca
+Version: 2018-08-08
+-------------------------------------------------------
+Description: Creates a list of the top picks of beers
+inputs:
+    beers: a list of unsorted beers
+    filters: a list of filters
+return:
+    sortedBeers: a list of tuples sorted by accuracy [beer, accuracy]
+-------------------------------------------------------
+"""
 def searchFunc(beers, filters):
     sortedBeers = []
     # accuracies is a list of the percentage matching to the filters
@@ -14,7 +30,7 @@ def searchFunc(beers, filters):
         i = 0
         accuracy = 0
         if filters[0] != "":
-            accuracy += 1 - ((abs(int(filter[0])-int(beer.alcoholVolume)))/int(filter[0]))
+            accuracy += 1 - abs(int(filters[0])-int(beer.alcoholVolume))/int(filters[0])
         if beer.brand == filters[1] and filters[1] != "":
             accuracy += 1
         if beer.bodyType == filters[2] and filters[2] != "":
@@ -31,14 +47,7 @@ def searchFunc(beers, filters):
     # checks all beers to see if it matches the level of accuracy and appends to sortedBeers
     # upgrade would be to skip over beers that are of a higher accuracy
 
-    insertionSort(sortedBeers)
-    for i in range(numFilters, -1, -1):
-        j = 0
-        for beer in beers:
-            if accuracies[j] == i / numFilters:
-                sortedBeers.append(beer)
-            j+=1
-    return sortedBeers, accuracies
+    return insertionSort(sortedBeers)
 
 def insertionSort(alist):
    for index in range(1,len(alist)):
