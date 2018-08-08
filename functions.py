@@ -38,9 +38,16 @@ def searchFunc(beers, filters):
             accuracy +=1
         if beer.containerType == filters[containerType] and len(filters[containerType]) != 0:
             numTypes = len(filters[containerType])
-            accuracy += 1
+            for k in range(0, numTypes-1):
+                for bk in range(0, len(beer.containerType))-1):
+                    if beer.containerType[bk] == filter(containerType)[k]:
+                        accuracy += 1/numTypes
         if beer.taste == filters[4] and len(filters[taste])!=0:
-            accuracy += 1
+            numTaste = len(filters[taste])
+            for k in range(0, numTaste - 1):
+                for bk in range(0, len(beer.containerType)) - 1):
+                    if beer.containerType[bk] == filter(containerType)[k]:
+                        accuracy += 1 / numTaste
         sortedBeers.append([beer, accuracy/numFilters])
     # sort section
 
