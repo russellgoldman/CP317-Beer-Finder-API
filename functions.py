@@ -9,7 +9,7 @@ Version: 2018-08-08
 Description: Creates a list of the top picks of beers
 inputs:
     beers: a list of unsorted beers
-    filters: a list of filters
+    filters: a dictionary object of the filters that are sent in
 return:
     sortedBeers: a list of tuples sorted by accuracy [beer, accuracy]
 -------------------------------------------------------
@@ -20,24 +20,26 @@ def searchFunc(beers, filters):
     # if beer #2 of 4 matches 3/5 of the filters passed in,
     # accuracies will be [0,0.6,0,0]
 
-    numFilters = 0
-    for filter in filters:
-        if filter != "":
-            numFilters += 1
+    numFilters = len(filters)
 
     for beer in beers:
         # for now, beer.containerType and beer.taste do not exist
         i = 0
         accuracy = 0
-        if filters[0] != "":
-            accuracy += 1 - abs(int(filters[0])-int(beer.alcoholVolume))/int(filters[0])
-        if beer.brand == filters[1] and filters[1] != "":
+        if filters[alcoholVolume] != "":
+            accuracy += 1 - abs(int(filters[alcoholVolume])-int(beer.alcoholVolume))/int(filters[alcoholVolume])
+        if beer.brandName == filters[brandName] and filters[brandName] != "":
             accuracy += 1
-        if beer.bodyType == filters[2] and filters[2] != "":
+        if beer.countryOfOrigin == filters[countryOfOrigin] and filters[countryOfOrigin]!="":
+            accuracy+=1
+        if beer.bodyTypeName == filters[bodyTypeName] and filters[bodyTypeName] != "":
             accuracy += 1
-        if beer.containerType == filters[3] and filters[3] != "":
+        if beer.colourName == filters[colourName] and filters[colourName] !="":
+            accuracy +=1
+        if beer.containerType == filters[containerType] and len(filters[containerType]) != 0:
+            numTypes = len(filters[containerType])
             accuracy += 1
-        if beer.taste == filters[4] and filters[4] != "":
+        if beer.taste == filters[4] and len(filters[taste])!=0:
             accuracy += 1
         sortedBeers.append([beer, accuracy/numFilters])
     # sort section
