@@ -1,44 +1,84 @@
+"""
+-------------------------------------------------------
+name: searchFunc
+Author:  Matthew Wong, Kevin Tang
+ID:      160624580, 110511280
+Email:   wong4580@mylaurier.ca, tang1280@mylaurier.ca
+Version: 2018-08-08
+-------------------------------------------------------
+Description: Creates a list of the top picks of beers
+inputs:
+    beers: a list of unsorted beers
+    filters: a dictionary object of the filters that are sent in
+return:
+    sortedBeers: a list of tuples sorted by accuracy [beer, accuracy]
+-------------------------------------------------------
+"""
 def searchFunc(beers, filters):
-    accuracies = []
+    tempBeers = []
     # accuracies is a list of the percentage matching to the filters
     # if beer #2 of 4 matches 3/5 of the filters passed in,
     # accuracies will be [0,0.6,0,0]
 
-    numFilters = 0
-    for filter in filters:
-        if filter != "":
-            numFilters += 1
+    numFilters = len(filters)
 
     for beer in beers:
         # for now, beer.containerType and beer.taste do not exist
-        i = 0
         accuracy = 0
-        if beer.alcoholVolume == filters[0] and filters[0] != "":
+        if filters["alcoholVolume"] != "":
+            accuracy += 1 - abs(int(filters["alcoholVolume"])-int(beer.alcoholVolume))/int(filters["alcoholVolume"])
+        if beer.brandName == filters["brandName"] and filters["brandName"] != "":
             accuracy += 1
-        if beer.brand == filters[1] and filters[1] != "":
+        if beer.countryOfOrigin == filters["countryOfOrigin"] and filters["countryOfOrigin"]!="":
+            accuracy+=1
+        if beer.bodyTypeName == filters["bodyTypeName"] and filters["bodyTypeName"] != "":
             accuracy += 1
-        if beer.bodyType == filters[2] and filters[2] != "":
-            accuracy += 1
-        if beer.containerType == filters[3] and filters[3] != "":
-            accuracy += 1
-        if beer.taste == filters[4] and filters[4] != "":
-            accuracy += 1
-        accuracies.append(accuracy / numFilters)
+        if beer.colourName == filters["colourName"] and filters["colourName"] !="":
+            accuracy +=1
+
+        if beer.containerType == filters["containerType"] and len(filters["containerType"]) != 0:
+            numTypes = len(filters["containerType"])
+            for containerType in filters["containerType"]:
+                for beerContainerType in beer.containerType:
+                    if beerContainerType == containerType:
+                        accuracy += 1/numTypes
+
+        if beer.taste == filters["taste"] and len(filters["taste"])!=0:
+            numTaste = len(filters["taste"])
+            for taste in filters["taste"]:
+                for beerTaste in beer.taste:
+                    if beerTaste == taste:
+                        accuracy += 1 / numTaste
+
+        tempBeers.append([beer, accuracy/numFilters])
 
     # sort section
-    high = 1
-    sortedBeers = []
+
 
     # for each level of accuracy, from high to low,
     # checks all beers to see if it matches the level of accuracy and appends to sortedBeers
     # upgrade would be to skip over beers that are of a higher accuracy
-    for i in range(numFilters, -1, -1):
-        j = 0
-        for beer in beers:
-            if accuracies[j] == i / numFilters:
-                sortedBeers.append(beer)
+    insertionSort(tempBeers)
+    sortedBeers = []
+    sortedAccuracies =[]
+    for beer in tempBeers:
+        sortedBeers.append(tempBeers[0])
+        sortedAccuracies.append(tempBeers[1])
 
-    return sortedBeers, accuracies
+    return {"beers":sortedBeers, "accuracy":sortedAccuracies}
+
+def insertionSort(alist):
+   for index in range(1,len(alist)):
+
+    currentvalue = alist[index]
+    position = index
+
+    while position>0 and alist[position-1][1]<currentvalue[1]:
+        alist[position]=alist[position-1]
+        position -=1
+
+    alist[position]=currentvalue
+   return
 """
 -------------------------------------------------------
 name: top_picksFunc
@@ -50,9 +90,14 @@ Version: 2018-08-08
 Description: Creates a list of the top picks of beers
 inputs:  beers: a list of beers
         db: a database connection
+<<<<<<< HEAD
 return:   top_picks: a  2dlist of beer objects, and theirs ratings
             with max size 6x2. 
             
+=======
+return:   top_picks: a 2d list of beers with max size 6x2.
+            the beer_id then the rating
+>>>>>>> c2d59e8054f7659ea8930505e21692a21072a374
 -------------------------------------------------------
 """
 def top_picksFunc(beers,db):
