@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 # from models includes db
 from models import *
+from functions import searchFunc
+from functions import top_picksFunc
 app = Flask(__name__)
 
 POSTGRES = {
@@ -31,10 +33,40 @@ def hello():
     return ','.join(str(i) for i in arr)
     db_session.remove()
 
-@app.route('/<name>')
-def hello_name(name):
-    return "Hello {}!".format(name)
+@app.route('/search/results')
+def search(filters):
+    #search section
+    sql = """SELECT * from home_beer"""
+    result = db.engine.execute(sql)
+    beers = []
+    for row in result:
+        beers.append(row)
 
+    return searchFunc(beers, filters)
+    db_session.remove()
+
+
+@app.route('/<name>+<color>')
+def hello_name(name, color):
+    return "Hello {}{}!".format(color, name)
+
+@app.route('/test')
+def test():
+    sql = """SELECT * from home_beer"""
+    result = db.engine.execute(sql)
+    arr = []
+    for row in result:
+        arr.append(row)
+    return str(arr[0].id)
+@app.route('/test2')
+def test2():
+    sql = """SELECT * from home_beer"""
+    result = db.engine.execute(sql)
+    arr = []
+    for row in result:
+        arr.append(row)
+
+    return str(top_picksFunc(arr,db))
 # enable debug mode
 app.config['DEBUG'] = True
 if __name__ == '__main__':
