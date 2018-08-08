@@ -32,6 +32,12 @@ def searchFunc(beers, filters):
     # upgrade would be to skip over beers that are of a higher accuracy
 
     insertionSort(sortedBeers)
+    for i in range(numFilters, -1, -1):
+        j = 0
+        for beer in beers:
+            if accuracies[j] == i / numFilters:
+                sortedBeers.append(beer)
+            j+=1
     return sortedBeers, accuracies
 
 def insertionSort(alist):
@@ -57,7 +63,7 @@ Version: 2018-08-08
 Description: Creates a list of the top picks of beers
 inputs:  beers: a list of beers
         db: a database connection
-return:   top_picks: a 2d list of beers with max size 6x2. 
+return:   top_picks: a 2d list of beers with max size 6x2.
             the beer_id then the rating
 -------------------------------------------------------
 """
