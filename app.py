@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 # from models includes db
 from models import *
 from functions import searchFunc
+from functions import top_picksFunc
 app = Flask(__name__)
 
 POSTGRES = {
@@ -57,7 +58,15 @@ def test():
     for row in result:
         arr.append(row)
     return str(arr[0].id)
+@app.route('/test2')
+def test2():
+    sql = """SELECT * from home_beer"""
+    result = db.engine.execute(sql)
+    arr = []
+    for row in result:
+        arr.append(row)
 
+    return str(top_picksFunc(arr,db))
 # enable debug mode
 app.config['DEBUG'] = True
 if __name__ == '__main__':

@@ -45,27 +45,58 @@ name: top_picksFunc
 Author:  Jeremy Lickers
 ID:      140246920
 Email:   lick6920@mylaurier.ca
-Version: 2018-08-07
+Version: 2018-08-08
 -------------------------------------------------------
 Description: Creates a list of the top picks of beers
 inputs:  beers: a list of beers
-return:   top_picks: a list of beers with max size 6
+        db: a database connection
+return:   top_picks: a 2d list of beers with max size 6x2. 
+            the beer_id then the rating
 -------------------------------------------------------
 """
-def top_picksFunc(beers):
-    #The top picks are based on the highest alcoholVolume
-    top_picks = []
-    if not top_picks:
-        i = 1
-        n=len(beers)
-        j = 0
-        while i < n:
-            while beers[i].alcoholVolume > beers[j].alcoholVolume and \
-                j > -1:
-                j = j - 1
-            beers.insert(j,beers[i])
-            i = i + 1
-            beers.pop(i)
-        for i in range(6):
-            top_picks.append(beers[i])
+def top_picksFunc(beers,db):
+    #The top picks are based on the highest rating from the home_rating table
+    sql = """SELECT * from home_rating where beer_id = """
+    i = 0
+    n=len(beers)
+    #assuming ratings, and ids cannot be negative
+    first = [-1,-1]
+    second = [-1,-1]
+    third = [-1,-1]
+    fourth = [-1,-1]
+    fifth = [-1,-1]
+    sixth =[-1,-1]
+    top_picks = [first,second,third,fourth,fifth,sixth]
+    while i < n:
+        ratingsTable = db.engine.execute(sql + str(beers[i].id))
+        ratings = []
+        j=0
+        for row in ratingsTable:
+            ratings.append(row)
+        m=len(ratings)
+        total = 0
+        while j<m:
+            total = total + ratings[j].ratingValue
+            j=j+1
+        if m > 0:
+            total = total/m
+        if total > top_picks[0][1]:
+            top_picks[0][0] = beers[i].id
+            top_picks[0][1] = total
+        elif total > top_picks[1][1]:
+            top_picks[1][0] = beers[i].id
+            top_picks[1][1] = total
+        elif total > top_picks[2][1]:
+            top_picks[2][0] = beers[i].id
+            top_picks[2][1] = total
+        elif total > top_picks[3][1]:
+            top_picks[3][0] = beers[i].id
+            top_picks[3][1] = total
+        elif total > top_picks[4][1]:
+            top_picks[4][0] = beers[i].id
+            top_picks[4][1] = total
+        elif total > top_picks[5][1]:
+            top_picks[5][0] = beers[i].id
+            top_picks[5][1] = total
+        i=i+1
     return top_picks
