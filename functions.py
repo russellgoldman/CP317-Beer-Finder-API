@@ -50,8 +50,9 @@ Version: 2018-08-08
 Description: Creates a list of the top picks of beers
 inputs:  beers: a list of beers
         db: a database connection
-return:   top_picks: a 2d list of beers with max size 6x2. 
-            the beer_id then the rating
+return:   top_picks: a  2dlist of beer objects, and theirs ratings
+            with max size 6x2. 
+            
 -------------------------------------------------------
 """
 def top_picksFunc(beers,db):
@@ -60,43 +61,25 @@ def top_picksFunc(beers,db):
     i = 0
     n=len(beers)
     #assuming ratings, and ids cannot be negative
-    first = [-1,-1]
-    second = [-1,-1]
-    third = [-1,-1]
-    fourth = [-1,-1]
-    fifth = [-1,-1]
-    sixth =[-1,-1]
-    top_picks = [first,second,third,fourth,fifth,sixth]
+
+    top_picks = [[]]
     while i < n:
         ratingsTable = db.engine.execute(sql + str(beers[i].id))
         ratings = []
-        j=0
+        j = 0
         for row in ratingsTable:
             ratings.append(row)
-        m=len(ratings)
+        m = len(ratings)
         total = 0
-        while j<m:
+        while j < m:
             total = total + ratings[j].ratingValue
-            j=j+1
+            j = j+1
         if m > 0:
             total = total/m
-        if total > top_picks[0][1]:
-            top_picks[0][0] = beers[i].id
-            top_picks[0][1] = total
-        elif total > top_picks[1][1]:
-            top_picks[1][0] = beers[i].id
-            top_picks[1][1] = total
-        elif total > top_picks[2][1]:
-            top_picks[2][0] = beers[i].id
-            top_picks[2][1] = total
-        elif total > top_picks[3][1]:
-            top_picks[3][0] = beers[i].id
-            top_picks[3][1] = total
-        elif total > top_picks[4][1]:
-            top_picks[4][0] = beers[i].id
-            top_picks[4][1] = total
-        elif total > top_picks[5][1]:
-            top_picks[5][0] = beers[i].id
-            top_picks[5][1] = total
-        i=i+1
-    return top_picks
+        for k in range(6):
+            if not top_picks[k] or total > top_picks[k][1]:
+                top_picks.insert(k, [beers[i], total])
+                break
+
+        i = i + 1
+    return top_picks[:6]
