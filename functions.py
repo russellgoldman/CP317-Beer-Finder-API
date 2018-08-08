@@ -36,18 +36,21 @@ def searchFunc(beers, filters):
             accuracy += 1
         if beer.colourName == filters[colourName] and filters[colourName] !="":
             accuracy +=1
+
         if beer.containerType == filters[containerType] and len(filters[containerType]) != 0:
             numTypes = len(filters[containerType])
-            for k in range(0, numTypes-1):
-                for bk in range(0, len(beer.containerType))-1):
-                    if beer.containerType[bk] == filter(containerType)[k]:
+            for containerType in filters[containerType]:
+                for beerContainerType in beer.containerType:
+                    if beerContainerType == containerType:
                         accuracy += 1/numTypes
-        if beer.taste == filters[4] and len(filters[taste])!=0:
+
+        if beer.taste == filters[taste] and len(filters[taste])!=0:
             numTaste = len(filters[taste])
-            for k in range(0, numTaste - 1):
-                for bk in range(0, len(beer.containerType)) - 1):
-                    if beer.containerType[bk] == filter(containerType)[k]:
+            for taste in filters[taste]:
+                for beerTaste in beer.taste:
+                    if beerTaste == taste:
                         accuracy += 1 / numTaste
+
         sortedBeers.append([beer, accuracy/numFilters])
     # sort section
 
@@ -64,9 +67,9 @@ def insertionSort(alist):
      currentvalue = alist[index]
      position = index
 
-     while position>0 and alist[position-1][1]>currentvalue[1]:
+     while position>0 and alist[position-1][1]<currentvalue[1]:
          alist[position]=alist[position-1]
-         position = position-1
+         position -=1
 
      alist[position]=currentvalue
    return
