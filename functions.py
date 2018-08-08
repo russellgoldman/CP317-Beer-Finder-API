@@ -16,6 +16,8 @@ return:
 """
 def searchFunc(beers, filters):
     tempBeers = []
+    # print(beers)
+    # print(filters)
     numFilters = len(filters)
     for beer in beers:
         # for now, beer.containerType and beer.taste do not exist
@@ -47,9 +49,8 @@ def searchFunc(beers, filters):
                     if beerTaste == taste:
                         accuracy += 1 / numTaste
 
-
-
-        tempBeers.append([beer, accuracy/numFilters])
+        # -2 because we don't have containerType and taste working yet
+        tempBeers.append([beer, accuracy/(numFilters)])
 
     insertionSort(tempBeers)
     sortedBeers = []
@@ -85,8 +86,8 @@ inputs:  beers: a list of beers
         db: a database connection
 <<<<<<< HEAD
 return:   top_picks: a  2dlist of beer objects, and theirs ratings
-            with max size 6x2. 
-            
+            with max size 6x2.
+
 =======
 return:   top_picks: a 2d list of beers with max size 6x2.
             the beer_id then the rating
