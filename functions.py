@@ -37,5 +37,71 @@ def searchFunc(beers, filters):
         for beer in beers:
             if accuracies[j] == i / numFilters:
                 sortedBeers.append(beer)
+<<<<<<< HEAD
             j+=1
     return sortedBeers, accuracies
+=======
+
+    return sortedBeers, accuracies
+"""
+-------------------------------------------------------
+name: top_picksFunc
+Author:  Jeremy Lickers
+ID:      140246920
+Email:   lick6920@mylaurier.ca
+Version: 2018-08-08
+-------------------------------------------------------
+Description: Creates a list of the top picks of beers
+inputs:  beers: a list of beers
+        db: a database connection
+return:   top_picks: a 2d list of beers with max size 6x2. 
+            the beer_id then the rating
+-------------------------------------------------------
+"""
+def top_picksFunc(beers,db):
+    #The top picks are based on the highest rating from the home_rating table
+    sql = """SELECT * from home_rating where beer_id = """
+    i = 0
+    n=len(beers)
+    #assuming ratings, and ids cannot be negative
+    first = [-1,-1]
+    second = [-1,-1]
+    third = [-1,-1]
+    fourth = [-1,-1]
+    fifth = [-1,-1]
+    sixth =[-1,-1]
+    top_picks = [first,second,third,fourth,fifth,sixth]
+    while i < n:
+        ratingsTable = db.engine.execute(sql + str(beers[i].id))
+        ratings = []
+        j=0
+        for row in ratingsTable:
+            ratings.append(row)
+        m=len(ratings)
+        total = 0
+        while j<m:
+            total = total + ratings[j].ratingValue
+            j=j+1
+        if m > 0:
+            total = total/m
+        if total > top_picks[0][1]:
+            top_picks[0][0] = beers[i].id
+            top_picks[0][1] = total
+        elif total > top_picks[1][1]:
+            top_picks[1][0] = beers[i].id
+            top_picks[1][1] = total
+        elif total > top_picks[2][1]:
+            top_picks[2][0] = beers[i].id
+            top_picks[2][1] = total
+        elif total > top_picks[3][1]:
+            top_picks[3][0] = beers[i].id
+            top_picks[3][1] = total
+        elif total > top_picks[4][1]:
+            top_picks[4][0] = beers[i].id
+            top_picks[4][1] = total
+        elif total > top_picks[5][1]:
+            top_picks[5][0] = beers[i].id
+            top_picks[5][1] = total
+        i=i+1
+    return top_picks
+>>>>>>> cb9e55b7d682b8b2c387bb3c319e2256fcd7d0df
