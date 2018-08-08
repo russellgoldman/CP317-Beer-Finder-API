@@ -16,25 +16,21 @@ return:
 """
 def searchFunc(beers, filters):
     tempBeers = []
-    # accuracies is a list of the percentage matching to the filters
-    # if beer #2 of 4 matches 3/5 of the filters passed in,
-    # accuracies will be [0,0.6,0,0]
-
     numFilters = len(filters)
-
     for beer in beers:
         # for now, beer.containerType and beer.taste do not exist
         accuracy = 0
         if filters["alcoholVolume"] != "":
-            accuracy += 1 - abs(int(filters["alcoholVolume"])-int(beer.alcoholVolume))/int(filters["alcoholVolume"])
+            difference = abs(filters["alcoholVolume"] - beer.alcoholVolume)
+            accuracy += 1 - difference / (filters["alcoholVolume"]+beer.alcoholVolume)
         if beer.brandName == filters["brandName"] and filters["brandName"] != "":
             accuracy += 1
-        if beer.countryOfOrigin == filters["countryOfOrigin"] and filters["countryOfOrigin"]!="":
-            accuracy+=1
+        #if beer.countryOfOrigin == filters["countryOfOrigin"] and filters["countryOfOrigin"]!="":
+         #   accuracy+=1
         if beer.bodyTypeName == filters["bodyTypeName"] and filters["bodyTypeName"] != "":
             accuracy += 1
-        if beer.colourName == filters["colourName"] and filters["colourName"] !="":
-            accuracy +=1
+        #if beer.colourName == filters["colourName"] and filters["colourName"] !="":
+         #   accuracy +=1
 
         if beer.containerType == filters["containerType"] and len(filters["containerType"]) != 0:
             numTypes = len(filters["containerType"])
@@ -43,6 +39,7 @@ def searchFunc(beers, filters):
                     if beerContainerType == containerType:
                         accuracy += 1/numTypes
 
+
         if beer.taste == filters["taste"] and len(filters["taste"])!=0:
             numTaste = len(filters["taste"])
             for taste in filters["taste"]:
@@ -50,20 +47,16 @@ def searchFunc(beers, filters):
                     if beerTaste == taste:
                         accuracy += 1 / numTaste
 
+
+
         tempBeers.append([beer, accuracy/numFilters])
 
-    # sort section
-
-
-    # for each level of accuracy, from high to low,
-    # checks all beers to see if it matches the level of accuracy and appends to sortedBeers
-    # upgrade would be to skip over beers that are of a higher accuracy
     insertionSort(tempBeers)
     sortedBeers = []
     sortedAccuracies =[]
     for beer in tempBeers:
-        sortedBeers.append(tempBeers[0])
-        sortedAccuracies.append(tempBeers[1])
+        sortedBeers.append(beer[0])
+        sortedAccuracies.append(beer[1])
 
     return {"beers":sortedBeers, "accuracy":sortedAccuracies}
 
