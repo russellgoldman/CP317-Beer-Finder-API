@@ -37,5 +37,5 @@ def searchFunc(beers, filters):
         for beer in beers:
             if accuracies[j] == i / numFilters:
                 sortedBeers.append(beer)
-
+            j+=1
     return sortedBeers, accuracies
