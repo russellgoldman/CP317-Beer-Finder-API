@@ -26,12 +26,14 @@ db.init_app(app)
 class Beer(object):
     alcoholVolume = 0.0
     brandName = ""
+    beerPhoto = ""
     bodyTypeName = ""
     containerType = []
     taste = []
-    def __init__(self, alcoholVolume, brandName, bodyTypeName, containerType, taste):
+    def __init__(self, alcoholVolume, brandName, beerPhoto, bodyTypeName, containerType, taste):
         self.alcoholVolume = alcoholVolume
         self.brandName = brandName
+        self.beerPhoto = beerPhoto
         self.bodyTypeName = bodyTypeName
         self.containerType = containerType
         self.taste = taste
@@ -58,6 +60,7 @@ def search():
     for beer in beers:
         alcoholVolume = beer.alcoholVolume
         brandName = beer.brand.brandName
+        beerPhoto = beer.beerPhoto
         bodyTypeName = beer.bodyType.bodyTypeName
         containerTypes = []
         containerTypeLookups = HomeBeerContainerType.query.all()
@@ -76,7 +79,7 @@ def search():
         print(containerTypes)
         print(tasteTypes)
         """
-        newBeer = Beer(alcoholVolume, brandName, bodyTypeName, containerTypes, tasteTypes)
+        newBeer = Beer(alcoholVolume, brandName, beerPhoto, bodyTypeName, containerTypes, tasteTypes)
         beersList.append(newBeer)
 
     results = json.dumps(searchFunc(beersList, filters), default=lambda o: o.__dict__, sort_keys=True, indent=4)
