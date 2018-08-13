@@ -38,54 +38,46 @@ class Beer(object):
         self.containerType = containerType
         self.taste = taste
 
-@app.route('/')
-def hello():
-    sql = """SELECT * from home_beer"""
-    result = db.session.execute(sql)
-    arr = []
-    for row in result:
-        arr.append(row)
-
-    return ','.join(str(i) for i in arr)
-    db_session.remove()
-
 @app.route('/search/results', methods = ['POST'])
 def search():
-    filters = request.get_json()
-    #search section
-    #sql = """SELECT * from home_beer"""
-    beers = HomeBeer.query.all()
-    beersList = []
+    try:
+        filters = request.get_json()
+        #search section
+        beers = HomeBeer.query.all()
+        beersList = []
 
-    for beer in beers:
-        alcoholVolume = beer.alcoholVolume
-        brandName = beer.brand.brandName
-        beerPhoto = beer.beerPhoto
-        bodyTypeName = beer.bodyType.bodyTypeName
-        containerTypes = []
-        containerTypeLookups = HomeBeerContainerType.query.all()
-        for key in containerTypeLookups:
-            if key.beer_id == beer.id:
-                containerTypes.append(key.containertype.containerTypeName)
-        tasteTypes = []
-        tasteTypeLookups = HomeBeerTaste.query.all()
-        for key in tasteTypeLookups:
-            if key.beer_id == beer.id:
-                tasteTypes.append(key.taste.tasteName)
-        """
-        print(alcoholVolume)
-        print(brandName)
-        print(bodyTypeName)
-        print(containerTypes)
-        print(tasteTypes)
-        """
-        newBeer = Beer(alcoholVolume, brandName, beerPhoto, bodyTypeName, containerTypes, tasteTypes)
-        beersList.append(newBeer)
+        for beer in beers:
+            alcoholVolume = beer.alcoholVolume
+            brandName = beer.brand.brandName
+            beerPhoto = beer.beerPhoto
+            bodyTypeName = beer.bodyType.bodyTypeName
+            containerTypes = []
+            containerTypeLookups = HomeBeerContainerType.query.all()
+            for key in containerTypeLookups:
+                if key.beer_id == beer.id:
+                    containerTypes.append(key.containertype.containerTypeName)
+            tasteTypes = []
+            tasteTypeLookups = HomeBeerTaste.query.all()
+            for key in tasteTypeLookups:
+                if key.beer_id == beer.id:
+                    tasteTypes.append(key.taste.tasteName)
+            """
+            print(alcoholVolume)
+            print(brandName)
+            print(bodyTypeName)
+            print(containerTypes)
+            print(tasteTypes)
+            """
+            newBeer = Beer(alcoholVolume, brandName, beerPhoto, bodyTypeName, containerTypes, tasteTypes)
+            beersList.append(newBeer)
 
-    results = json.dumps(searchFunc(beersList, filters), default=lambda o: o.__dict__, sort_keys=True, indent=4)
-    return results
+        results = json.dumps(searchFunc(beersList, filters), default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        return results
+    except:
+        # if error occurs, return empty object with 400 (BAD_REQUEST)
+        return json.dumps({}), 400
+
     db_session.remove()
-
 
 @app.route('/<name>+<color>')
 def hello_name(name, color):
